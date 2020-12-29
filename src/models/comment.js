@@ -6,7 +6,11 @@ const CommentSchema = new mongoose.Schema({
     book :{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Book'
-    }
+    },
+    user :{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
 });
 
 module.exports = mongoose.model('Comment',CommentSchema);

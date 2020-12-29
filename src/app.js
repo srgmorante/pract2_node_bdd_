@@ -1,12 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const booksRouter = require('./books.js').router;
-//const usersRouter = require('./users.js').router;
+const usersRouter = require('./users.js').router;
 const commentsRouter = require('./comments.js').router;
+const neighborhoodRouter = require('./routers/neighborhoodRouter.js').router;
 const booksInit = require('./books.js').init;
 //const usersInit = require('./users.js').init;
 const commentsInit = require('./comments.js').init;
-const mongoUrl = "mongodb://localhost:27017/books";
+const mongoUrl = 'mongodb+srv://admin:<password>@cluster0.ti0hu.mongodb.net/<dbname>?retryWrites=true&w=majority';
 
 const app = express();
 
@@ -14,8 +15,9 @@ const app = express();
 app.use(express.json());
 
 app.use(booksRouter);
-//app.use(usersRouter);
+app.use(usersRouter);
 app.use(commentsRouter);
+app.use(neighborhoodRouter);
 
 async function main() {
 

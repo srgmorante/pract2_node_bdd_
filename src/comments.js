@@ -41,11 +41,13 @@ router.post('/api/v1/books/:id/comments', async (req, res) => {
         res.sendStatus(400);
     } else {
         const bookId = req.params.id;
+        const { commentText, score, user } = req.body;
 
         const comment = new Comment({
-            comment: req.body.comment,
-            score: req.body.score,
-            book: bookId
+            comment: commentText,
+            score,
+            book: bookId,
+            user
         });
 
         await comment.save();
@@ -54,13 +56,23 @@ router.post('/api/v1/books/:id/comments', async (req, res) => {
         bookById.comments.push(comment);
         await bookById.save();
 
+        const userById = await User.findById(user);
+        if (userById) {
+            userById.comments.push(comment);
+            await userById.save();
+        } else {
+            res.sendStatus(400);
+        }
+
+
+
         res.location(fullUrl(req) + comment.id);
         res.json(toResponse(comment));
     }
 });
 
 router.get('/api/v1/comments', async (req, res) => {
-    const allComments = await Comment.find().exec();
+    const allComments = await Comment.find().populate('user');
     res.json(toResponse(allComments));
 });
 

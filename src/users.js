@@ -38,10 +38,10 @@ router.post('/api/v1/users', async (req, res) => {
     if (!validUser(req.body)) {
         res.sendStatus(400);
     } else {
-
+        const { nick, mail } = req.body;
         const user = new User({
-            nick: req.body.nick,
-            mail: req.body.mail
+            nick,
+            mail
         });
 
         await user.save();
